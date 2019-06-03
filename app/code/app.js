@@ -1,7 +1,7 @@
 const setCookie = require('set-cookie-parser');
 const cookie = require('cookie');
 
-exports.lambdaHandler = async (event, context) => {
+exports.handler = async (event, context) => {
     let response;
 
     try {
@@ -16,7 +16,7 @@ exports.lambdaHandler = async (event, context) => {
         ) {
             rawCookies = requestBody.raw_cookies;
         } else {
-            throw new Error('Parse error');
+            throw new Error('raw_cookies is not set');
         }
 
         rawCookies.forEach((rawCookie) => {
@@ -70,14 +70,19 @@ exports.lambdaHandler = async (event, context) => {
 
         response = {
             'statusCode': 200,
-            'body': JSON.stringify(body)
+            // 'headers': {},
+            'multiValueHeaders': {
+                'Set-Cookie': rawCookies
+            },
+            'body': JSON.stringify(body),
+            // 'isBase64Encoded': false
         };
 
-        if (setCookieHeaders > 0) {
-            response.headers = {
-                'Set-Cookie': setCookieHeaders
-            };
-        }
+        // if (setCookieHeaders.length > 0) {
+        //     response.multiValueHeaders = {
+        //         'Set-Cookie': setCookieHeaders
+        //     };
+        // }
 
     } catch (err) {
         console.log(err);
