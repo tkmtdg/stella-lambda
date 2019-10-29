@@ -1,4 +1,4 @@
-#!/Users/tkmtdg/work/stella-lambda/venv/bin/python3
+#!/Users/tkmtdg/work/stella-lambda/venv/bin/python
 
 # $Id: rst2xetex.py 7847 2015-03-17 17:30:47Z milde $
 # Author: Guenter Milde

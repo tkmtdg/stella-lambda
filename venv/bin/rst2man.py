@@ -1,4 +1,4 @@
-#!/Users/tkmtdg/work/stella-lambda/venv/bin/python3
+#!/Users/tkmtdg/work/stella-lambda/venv/bin/python
 
 # Author: 
 # Contact: grubert@users.sf.net
