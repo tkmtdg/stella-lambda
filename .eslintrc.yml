@@ -5,13 +5,19 @@ env:
   jest/globals: true
 plugins:
   - jest
-extends: 'eslint:recommended'
+  - prettier
+extends: 
+  - google
+  - plugin:prettier/recommended
+  # - prettier
+  # - eslint:recommended
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
 parserOptions:
   ecmaVersion: 2018
-rules: {
-  'no-console' : 'off',
-  'no-unused-vars' : 'warn'
-}
+rules:
+  no-console: off
+  no-unused-vars: warn
+  require-jsdoc: off
+  prettier/prettier: error

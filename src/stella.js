@@ -1,18 +1,15 @@
 class Stella {
-  constructor({
-    requestBodyRaw,
-    console
-  } = {}) {
-    if (typeof (requestBodyRaw) === 'undefined') {
+  constructor({ requestBodyRaw, console } = {}) {
+    if (typeof requestBodyRaw === 'undefined') {
       throw new Error('request body is not set');
     }
-    if (typeof (console) === 'undefined') {
+    if (typeof console === 'undefined') {
       throw new Error('console is not set');
     }
-    if (typeof (console.log) !== 'function') {
+    if (typeof console.log !== 'function') {
       throw new Error('console.log is not a function');
     }
-    if (typeof (console.warn) !== 'function') {
+    if (typeof console.warn !== 'function') {
       throw new Error('console.warn is not a function');
     }
     this.requestBodyRaw = requestBodyRaw;
@@ -29,7 +26,7 @@ class Stella {
       throw new Error('request body parse failed');
     }
 
-    if (typeof (requestBody.raw_cookies) === 'undefined') {
+    if (typeof requestBody.raw_cookies === 'undefined') {
       throw new Error('request body raw_cookies is not set');
     }
 
@@ -45,8 +42,8 @@ class Stella {
 
     const setCookies = [];
 
-    rawCookies.forEach((rawCookie) => {
-      if (typeof (rawCookie) !== 'string') {
+    rawCookies.forEach(rawCookie => {
+      if (typeof rawCookie !== 'string') {
         this.console.warn('not a string', rawCookie);
         return;
       }
