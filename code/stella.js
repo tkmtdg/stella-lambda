@@ -1,14 +1,30 @@
-exports.handler = async (event, context) => {
-  try {
-    if (typeof (event.body) === 'undefined') {
+class Stella {
+  constructor({
+    requestBodyRaw,
+    console
+  } = {}) {
+    if (typeof (requestBodyRaw) === 'undefined') {
       throw new Error('request body is not set');
     }
+    if (typeof (console) === 'undefined') {
+      throw new Error('console is not set');
+    }
+    if (typeof (console.log) !== 'function') {
+      throw new Error('console.log is not a function');
+    }
+    if (typeof (console.warn) !== 'function') {
+      throw new Error('console.warn is not a function');
+    }
+    this.requestBodyRaw = requestBodyRaw;
+    this.console = console;
 
-    console.log('request body', event.body);
+    console.log('request body', requestBodyRaw);
+  }
 
+  bake() {
     let requestBody;
     try {
-      requestBody = JSON.parse(event.body);
+      requestBody = JSON.parse(this.requestBodyRaw);
     } catch (error) {
       throw new Error('request body parse failed');
     }
@@ -31,12 +47,12 @@ exports.handler = async (event, context) => {
 
     rawCookies.forEach((rawCookie) => {
       if (typeof (rawCookie) !== 'string') {
-        console.warn('not a string', rawCookie);
+        this.console.warn('not a string', rawCookie);
         return;
       }
 
       if (rawCookie.indexOf('=') === -1) {
-        console.warn('not a set-cookie string', rawCookie);
+        this.console.warn('not a set-cookie string', rawCookie);
         return;
       }
 
@@ -47,18 +63,9 @@ exports.handler = async (event, context) => {
       throw new Error('no set-cookie string left');
     }
 
-    console.log('set-cookies', setCookies);
-
-    return {
-      'statusCode': 200,
-      'multiValueHeaders': {
-        'Set-Cookie': setCookies
-      },
-      'body': '',
-    };
-
-  } catch (error) {
-    console.error(error.toString(), error);
-    throw error;
+    this.console.log('set-cookies', setCookies);
+    return setCookies;
   }
-};
+}
+
+module.exports = Stella;
