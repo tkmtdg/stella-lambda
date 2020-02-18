@@ -85,7 +85,8 @@ test('request body raw_cookies is empty', () => {
 
 test('no set-cookie string left', () => {
   const stella = new Stella({
-    requestBodyRaw: '{"raw_cookies":[1,"aaa"]}',
+    requestBodyRaw:
+      '{"raw_cookies":[1,"aaa","a=b\\nc","d=e\\rf","d=e\\r\\nf"]}',
     console: console,
   });
 

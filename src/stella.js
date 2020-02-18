@@ -1,3 +1,5 @@
+const uniq = require('lodash.uniq');
+
 class Stella {
   constructor({ requestBodyRaw, console } = {}) {
     if (typeof requestBodyRaw === 'undefined') {
@@ -53,6 +55,12 @@ class Stella {
         return;
       }
 
+      const trimmed = rawCookie.trim();
+      if (/(\r\n|\r|\n)/.test(trimmed)) {
+        this.console.warn('includes CR and/or LF', rawCookie);
+        return;
+      }
+
       setCookies.push(rawCookie);
     });
 
@@ -60,7 +68,9 @@ class Stella {
       throw new Error('no set-cookie string left');
     }
 
-    this.console.log('set-cookies', setCookies);
+    const uniqued = uniq(setCookies);
+
+    this.console.log('set-cookies', uniqued);
     return setCookies;
   }
 }
