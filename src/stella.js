@@ -68,10 +68,10 @@ class Stella {
       throw new Error('no set-cookie string left');
     }
 
-    const uniqued = uniq(setCookies);
+    const unique = uniq(setCookies);
 
-    this.console.log('set-cookies', uniqued);
-    return setCookies;
+    this.console.log('set-cookies', unique);
+    return unique;
   }
 }
 

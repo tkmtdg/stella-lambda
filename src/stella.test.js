@@ -103,3 +103,12 @@ test('set-cookie success', () => {
 
   expect(stella.bake()).toEqual(['a=b']);
 });
+
+test('unique', () => {
+  const stella = new Stella({
+    requestBodyRaw: '{"raw_cookies":["a=b","c=d","a=b","c=d"]}',
+    console: console,
+  });
+
+  expect(stella.bake()).toEqual(['a=b', 'c=d']);
+});
