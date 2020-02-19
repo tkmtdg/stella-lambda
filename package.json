@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "lodash.uniq": "^4.5.0"
+    "lodash.uniq": "^4.5.0",
+    "log4js": "^6.1.2"
   },
   "devDependencies": {
     "eslint": "^5.16.0",

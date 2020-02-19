@@ -12,32 +12,32 @@ test('request body is not set', () => {
   }).toThrowError('request body is not set');
 });
 
-test('console is not set', () => {
-  expect(() => {
-    new Stella({
-      requestBodyRaw: 'not a json',
-    });
-  }).toThrowError('console is not set');
+// test('console is not set', () => {
+//   expect(() => {
+//     new Stella({
+//       requestBodyRaw: 'not a json',
+//     });
+//   }).toThrowError('console is not set');
 
-  expect(() => {
-    new Stella({
-      requestBodyRaw: 'not a json',
-      console: {
-        log: 'not a funciotn',
-      },
-    });
-  }).toThrowError('console.log is not a function');
+//   expect(() => {
+//     new Stella({
+//       requestBodyRaw: 'not a json',
+//       console: {
+//         log: 'not a funciotn',
+//       },
+//     });
+//   }).toThrowError('console.log is not a function');
 
-  expect(() => {
-    new Stella({
-      requestBodyRaw: 'not a json',
-      console: {
-        log: x => x,
-        warn: 'not a funciotn',
-      },
-    });
-  }).toThrowError('console.warn is not a function');
-});
+//   expect(() => {
+//     new Stella({
+//       requestBodyRaw: 'not a json',
+//       console: {
+//         log: x => x,
+//         warn: 'not a funciotn',
+//       },
+//     });
+//   }).toThrowError('console.warn is not a function');
+// });
 
 test('request body parse failed', () => {
   const stella = new Stella({

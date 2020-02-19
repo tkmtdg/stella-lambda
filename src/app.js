@@ -4,7 +4,6 @@ exports.handler = async (event, context) => {
   try {
     const stella = new Stella({
       requestBodyRaw: event.body,
-      console: console,
     });
 
     const setCookies = stella.bake();

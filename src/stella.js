@@ -1,23 +1,20 @@
+const log4js = require('log4js');
 const uniq = require('lodash.uniq');
 
 class Stella {
-  constructor({ requestBodyRaw, console } = {}) {
+  constructor({ requestBodyRaw, logger, logLevel = 'debug' } = {}) {
     if (typeof requestBodyRaw === 'undefined') {
       throw new Error('request body is not set');
     }
-    if (typeof console === 'undefined') {
-      throw new Error('console is not set');
-    }
-    if (typeof console.log !== 'function') {
-      throw new Error('console.log is not a function');
-    }
-    if (typeof console.warn !== 'function') {
-      throw new Error('console.warn is not a function');
-    }
     this.requestBodyRaw = requestBodyRaw;
-    this.console = console;
+    if (typeof logger === 'object' && logger.constructor === log4js.Logger) {
+      this.logger = logger;
+    } else {
+      this.logger = log4js.getLogger('stella');
+      this.logger.level = logLevel;
+    }
 
-    console.log('request body', requestBodyRaw);
+    this.logger.debug('request body:', requestBodyRaw);
   }
 
   bake() {
@@ -46,18 +43,18 @@ class Stella {
 
     rawCookies.forEach(rawCookie => {
       if (typeof rawCookie !== 'string') {
-        this.console.warn('not a string', rawCookie);
+        this.logger.warn('not a string:', rawCookie);
         return;
       }
 
       if (rawCookie.indexOf('=') === -1) {
-        this.console.warn('not a set-cookie string', rawCookie);
+        this.logger.warn('not a set-cookie string:', rawCookie);
         return;
       }
 
       const trimmed = rawCookie.trim();
       if (/(\r\n|\r|\n)/.test(trimmed)) {
-        this.console.warn('includes CR and/or LF', rawCookie);
+        this.logger.warn('includes CR and/or LF:', rawCookie);
         return;
       }
 
@@ -70,7 +67,7 @@ class Stella {
 
     const unique = uniq(setCookies);
 
-    this.console.log('set-cookies', unique);
+    this.logger.debug('set-cookies:', unique);
     return unique;
   }
 }
