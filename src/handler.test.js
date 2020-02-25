@@ -1,6 +1,6 @@
 import mockConsole from 'jest-mock-console';
 const context = require('aws-lambda-mock-context');
-const { handler } = require('./app');
+const { handler } = require('./handler');
 const log4js = require('log4js');
 log4js.configure({
   appenders: { stella: { type: 'file', filename: '/dev/null' } },
