@@ -1,4 +1,5 @@
 const Stella = require('./stella');
+const log4js = require('log4js');
 
 test('empty parameter', () => {
   expect(() => {
@@ -10,6 +11,26 @@ test('request body is not set', () => {
   expect(() => {
     new Stella({});
   }).toThrowError('request body is not set');
+});
+
+test('set logger', () => {
+  const logger = new log4js.getLogger();
+  logger.level = 'all';
+  const stella = new Stella({
+    requestBodyRaw: '',
+    logger: logger,
+  });
+
+  expect(stella.logger.level.toString()).toEqual('ALL');
+});
+
+test('set logLevel', () => {
+  const stella = new Stella({
+    requestBodyRaw: '',
+    logLevel: 'all',
+  });
+
+  expect(stella.logger.level.toString()).toEqual('ALL');
 });
 
 // test('console is not set', () => {

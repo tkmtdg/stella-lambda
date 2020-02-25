@@ -1,16 +1,20 @@
 const log4js = require('log4js');
+const Logger = require('log4js/lib/logger');
 const uniq = require('lodash.uniq');
 
 class Stella {
-  constructor({ requestBodyRaw, logger, logLevel = 'debug' } = {}) {
+  constructor({ requestBodyRaw, logger, logLevel } = {}) {
     if (typeof requestBodyRaw === 'undefined') {
       throw new Error('request body is not set');
     }
     this.requestBodyRaw = requestBodyRaw;
-    if (typeof logger === 'object' && logger.constructor === log4js.Logger) {
+    if (typeof logger === 'object' && logger.constructor === Logger) {
       this.logger = logger;
     } else {
       this.logger = log4js.getLogger('stella');
+      this.logger.level = 'debug';
+    }
+    if (typeof logLevel === 'string') {
       this.logger.level = logLevel;
     }
 
