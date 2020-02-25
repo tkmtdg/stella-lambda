@@ -3,11 +3,15 @@ const Logger = require('log4js/lib/logger');
 const uniq = require('lodash.uniq');
 
 class Stella {
-  constructor({ requestBodyRaw, logger, logLevel } = {}) {
-    if (typeof requestBodyRaw === 'undefined') {
-      throw new Error('request body is not set');
+  constructor({ json, jsonFiledName = 'raw_cookies', logger, logLevel } = {}) {
+    if (typeof json === 'undefined') {
+      throw new Error('json is not set');
     }
-    this.requestBodyRaw = requestBodyRaw;
+    this.json = json;
+    if (typeof jsonFiledName !== 'string') {
+      throw new TypeError('jsonFiledName must be a string');
+    }
+    this.jsonFiledName = jsonFiledName;
     if (typeof logger === 'object' && logger.constructor === Logger) {
       this.logger = logger;
     } else {
@@ -17,30 +21,29 @@ class Stella {
     if (typeof logLevel === 'string') {
       this.logger.level = logLevel;
     }
-
-    this.logger.debug('request body:', requestBodyRaw);
+    this.logger.debug('json:', json);
   }
 
   bake() {
-    let requestBody;
+    let obj;
     try {
-      requestBody = JSON.parse(this.requestBodyRaw);
+      obj = JSON.parse(this.json);
     } catch (error) {
-      throw new Error('request body parse failed');
+      throw new Error('json parse failed');
     }
 
-    if (typeof requestBody.raw_cookies === 'undefined') {
-      throw new Error('request body raw_cookies is not set');
+    if (typeof obj[this.jsonFiledName] === 'undefined') {
+      throw new Error(`json ${this.jsonFiledName} is not set`);
     }
 
-    const rawCookies = requestBody.raw_cookies;
+    const rawCookies = obj[this.jsonFiledName];
 
     if (Array.isArray(rawCookies) === false) {
-      throw new Error('request body raw_cookies is not an array');
+      throw new TypeError(`json ${this.jsonFiledName} must be an array`);
     }
 
     if (rawCookies.length === 0) {
-      throw new Error('request body raw_cookies is empty');
+      throw new Error(`json ${this.jsonFiledName} is empty`);
     }
 
     const setCookies = [];

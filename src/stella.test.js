@@ -4,20 +4,29 @@ const log4js = require('log4js');
 test('empty parameter', () => {
   expect(() => {
     new Stella();
-  }).toThrowError('request body is not set');
+  }).toThrowError('json is not set');
 });
 
-test('request body is not set', () => {
+test('json is not set', () => {
   expect(() => {
     new Stella({});
-  }).toThrowError('request body is not set');
+  }).toThrowError('json is not set');
+});
+
+test('jsonFiledName', () => {
+  expect(() => {
+    new Stella({
+      json: '',
+      jsonFiledName: 123,
+    });
+  }).toThrowError('jsonFiledName must be a string');
 });
 
 test('set logger', () => {
   const logger = new log4js.getLogger();
   logger.level = 'all';
   const stella = new Stella({
-    requestBodyRaw: '',
+    json: '',
     logger: logger,
   });
 
@@ -26,89 +35,56 @@ test('set logger', () => {
 
 test('set logLevel', () => {
   const stella = new Stella({
-    requestBodyRaw: '',
+    json: '',
     logLevel: 'all',
   });
 
   expect(stella.logger.level.toString()).toEqual('ALL');
 });
 
-// test('console is not set', () => {
-//   expect(() => {
-//     new Stella({
-//       requestBodyRaw: 'not a json',
-//     });
-//   }).toThrowError('console is not set');
-
-//   expect(() => {
-//     new Stella({
-//       requestBodyRaw: 'not a json',
-//       console: {
-//         log: 'not a funciotn',
-//       },
-//     });
-//   }).toThrowError('console.log is not a function');
-
-//   expect(() => {
-//     new Stella({
-//       requestBodyRaw: 'not a json',
-//       console: {
-//         log: x => x,
-//         warn: 'not a funciotn',
-//       },
-//     });
-//   }).toThrowError('console.warn is not a function');
-// });
-
-test('request body parse failed', () => {
+test('json parse failed', () => {
   const stella = new Stella({
-    requestBodyRaw: 'not a json',
-    console: console,
+    json: 'not a json',
   });
 
   expect(() => {
     stella.bake();
-  }).toThrowError('request body parse failed');
+  }).toThrowError('json parse failed');
 });
 
-test('request body raw_cookies is not set', () => {
+test('json raw_cookies is not set', () => {
   const stella = new Stella({
-    requestBodyRaw: '{}',
-    console: console,
+    json: '{}',
   });
 
   expect(() => {
     stella.bake();
-  }).toThrowError('request body raw_cookies is not set');
+  }).toThrowError('json raw_cookies is not set');
 });
 
-test('request body raw_cookies is not an array', () => {
+test('json raw_cookies is not an array', () => {
   const stella = new Stella({
-    requestBodyRaw: '{"raw_cookies":{}}',
-    console: console,
+    json: '{"raw_cookies":{}}',
   });
 
   expect(() => {
     stella.bake();
-  }).toThrowError('request body raw_cookies is not an array');
+  }).toThrowError('json raw_cookies must be an array');
 });
 
-test('request body raw_cookies is empty', () => {
+test('json raw_cookies is empty', () => {
   const stella = new Stella({
-    requestBodyRaw: '{"raw_cookies":[]}',
-    console: console,
+    json: '{"raw_cookies":[]}',
   });
 
   expect(() => {
     stella.bake();
-  }).toThrowError('request body raw_cookies is empty');
+  }).toThrowError('json raw_cookies is empty');
 });
 
 test('no set-cookie string left', () => {
   const stella = new Stella({
-    requestBodyRaw:
-      '{"raw_cookies":[1,"aaa","a=b\\nc","d=e\\rf","d=e\\r\\nf"]}',
-    console: console,
+    json: '{"raw_cookies":[1,"aaa","a=b\\nc","d=e\\rf","d=e\\r\\nf"]}',
   });
 
   expect(() => {
@@ -118,8 +94,7 @@ test('no set-cookie string left', () => {
 
 test('set-cookie success', () => {
   const stella = new Stella({
-    requestBodyRaw: '{"raw_cookies":["a=b"]}',
-    console: console,
+    json: '{"raw_cookies":["a=b"]}',
   });
 
   expect(stella.bake()).toEqual(['a=b']);
@@ -127,8 +102,7 @@ test('set-cookie success', () => {
 
 test('unique', () => {
   const stella = new Stella({
-    requestBodyRaw: '{"raw_cookies":["a=b","c=d","a=b","c=d"]}',
-    console: console,
+    json: '{"raw_cookies":["a=b","c=d","a=b","c=d"]}',
   });
 
   expect(stella.bake()).toEqual(['a=b', 'c=d']);
