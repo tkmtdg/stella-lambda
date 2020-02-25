@@ -3,7 +3,7 @@ const Stella = require('./stella');
 exports.handler = async (event, context) => {
   try {
     const stella = new Stella({
-      requestBodyRaw: event.body,
+      json: event.body,
     });
 
     const setCookies = stella.bake();

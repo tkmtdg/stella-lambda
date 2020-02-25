@@ -8,11 +8,14 @@
     "log4js": "^6.1.2"
   },
   "devDependencies": {
+    "aws-lambda-mock-context": "^3.2.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-jest": "^23.7.0",
     "jest": "^24.9.0",
+    "jest-mock-console": "^1.0.0",
     "prettier-eslint": "^9.0.1",
     "prettier-eslint-cli": "^5.0.0"
   },
@@ -27,7 +30,10 @@
   },
   "jest": {
     "verbose": true,
-    "collectCoverage": true
+    "collectCoverage": true,
+    "setupFilesAfterEnv": [
+      "jest-mock-console/dist/setupTestFramework.js"
+    ]
   },
   "scripts": {
     "test": "jest --watchAll",

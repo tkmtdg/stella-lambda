@@ -3,15 +3,15 @@ const Logger = require('log4js/lib/logger');
 const uniq = require('lodash.uniq');
 
 class Stella {
-  constructor({ json, jsonFiledName = 'raw_cookies', logger, logLevel } = {}) {
+  constructor({ json, jsonFieldName = 'raw_cookies', logger, logLevel } = {}) {
     if (typeof json === 'undefined') {
       throw new Error('json is not set');
     }
     this.json = json;
-    if (typeof jsonFiledName !== 'string') {
-      throw new TypeError('jsonFiledName must be a string');
+    if (typeof jsonFieldName !== 'string') {
+      throw new TypeError('jsonFieldName must be a string');
     }
-    this.jsonFiledName = jsonFiledName;
+    this.jsonFiledName = jsonFieldName;
     if (typeof logger === 'object' && logger.constructor === Logger) {
       this.logger = logger;
     } else {
