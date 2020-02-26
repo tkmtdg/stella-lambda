@@ -68,14 +68,15 @@ class Stella {
       setCookies.push(rawCookie);
     });
 
+    let result = [];
     if (setCookies.length === 0) {
-      throw new Error('no set-cookie string left');
+      this.logger.warn('no set-cookie string left');
+    } else {
+      result = uniq(setCookies);
     }
 
-    const unique = uniq(setCookies);
-
-    this.logger.debug('set-cookies:', unique);
-    return unique;
+    this.logger.debug('set-cookies:', result);
+    return result;
   }
 }
 

@@ -12,7 +12,7 @@ beforeEach(() => {
 });
 
 describe('normal', () => {
-  test('handler', async () => {
+  it('handler', async () => {
     const event = {
       body: '{"raw_cookies":["a=b"]}',
     };
@@ -29,13 +29,11 @@ describe('normal', () => {
 });
 
 describe('abnormal', () => {
-  test('error', async () => {
+  it('error', async () => {
     const event = {
-      body: '{"raw_cookies":["a"]}',
+      body: undefined,
     };
 
-    expect(handler(event, context())).rejects.toThrowError(
-      'no set-cookie string left'
-    );
+    expect(handler(event, context())).rejects.toThrowError('json is not set');
   });
 });

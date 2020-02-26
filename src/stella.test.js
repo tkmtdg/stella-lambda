@@ -6,19 +6,19 @@ log4js.configure({
 });
 
 describe('constructor', () => {
-  test('empty parameter', () => {
+  it('empty parameter', () => {
     expect(() => {
       new Stella();
     }).toThrowError('json is not set');
   });
 
-  test('json is not set', () => {
+  it('json is not set', () => {
     expect(() => {
       new Stella({});
     }).toThrowError('json is not set');
   });
 
-  test('jsonFieldName', () => {
+  it('jsonFieldName', () => {
     expect(() => {
       new Stella({
         json: '',
@@ -27,7 +27,7 @@ describe('constructor', () => {
     }).toThrowError('jsonFieldName must be a string');
   });
 
-  test('set logger', () => {
+  it('set logger', () => {
     const logger = new log4js.getLogger();
     logger.level = 'all';
     const stella = new Stella({
@@ -38,7 +38,7 @@ describe('constructor', () => {
     expect(stella.logger.level.toString()).toEqual('ALL');
   });
 
-  test('set logLevel', () => {
+  it('set logLevel', () => {
     const stella = new Stella({
       json: '',
       logLevel: 'all',
@@ -49,7 +49,7 @@ describe('constructor', () => {
 });
 
 describe('json', () => {
-  test('json parse failed', () => {
+  it('json parse failed', () => {
     const stella = new Stella({
       json: 'not a json',
     });
@@ -59,7 +59,7 @@ describe('json', () => {
     }).toThrowError('json parse failed');
   });
 
-  test('json raw_cookies is not set', () => {
+  it('json raw_cookies is not set', () => {
     const stella = new Stella({
       json: '{}',
     });
@@ -69,7 +69,7 @@ describe('json', () => {
     }).toThrowError('json raw_cookies is not set');
   });
 
-  test('json raw_cookies is not an array', () => {
+  it('json raw_cookies is not an array', () => {
     const stella = new Stella({
       json: '{"raw_cookies":{}}',
     });
@@ -79,7 +79,7 @@ describe('json', () => {
     }).toThrowError('json raw_cookies must be an array');
   });
 
-  test('json raw_cookies is empty', () => {
+  it('json raw_cookies is empty', () => {
     const stella = new Stella({
       json: '{"raw_cookies":[]}',
     });
@@ -91,17 +91,15 @@ describe('json', () => {
 });
 
 describe('set-cookie', () => {
-  test('no set-cookie string left', () => {
+  it('no set-cookie string left', () => {
     const stella = new Stella({
       json: '{"raw_cookies":[1,"aaa","a=b\\nc","d=e\\rf","d=e\\r\\nf"]}',
     });
 
-    expect(() => {
-      stella.bake();
-    }).toThrowError('no set-cookie string left');
+    expect(stella.bake()).toEqual([]);
   });
 
-  test('set-cookie success', () => {
+  it('set-cookie success', () => {
     const stella = new Stella({
       json: '{"raw_cookies":["a=b"]}',
     });
@@ -109,7 +107,7 @@ describe('set-cookie', () => {
     expect(stella.bake()).toEqual(['a=b']);
   });
 
-  test('unique', () => {
+  it('unique', () => {
     const stella = new Stella({
       json: '{"raw_cookies":["a=b","c=d","a=b","c=d"]}',
     });
