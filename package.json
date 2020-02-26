@@ -8,7 +8,10 @@
     "log4js": "^6.1.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
     "aws-lambda-mock-context": "^3.2.1",
+    "babel-loader": "^8.0.6",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.14.0",
@@ -17,7 +20,10 @@
     "jest": "^24.9.0",
     "jest-mock-console": "^1.0.0",
     "prettier-eslint": "^9.0.1",
-    "prettier-eslint-cli": "^5.0.0"
+    "prettier-eslint-cli": "^5.0.0",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-node-externals": "^1.7.2"
   },
   "prettier": {
     "printWidth": 80,
@@ -37,8 +43,10 @@
   },
   "scripts": {
     "test": "jest --watchAll",
-    "format": "prettier-eslint --write './src/**/*.js'"
+    "format": "prettier-eslint --write './src/**/*.js'",
+    "build": "webpack"
   },
   "author": "tkmtdg <tkmtdg@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "private": true
 }
