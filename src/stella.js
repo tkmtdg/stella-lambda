@@ -1,5 +1,4 @@
 const log4js = require('log4js');
-const Logger = require('log4js/lib/logger');
 const uniq = require('lodash.uniq');
 
 class Stella {
@@ -12,7 +11,9 @@ class Stella {
       throw new TypeError('jsonFieldName must be a string');
     }
     this.jsonFiledName = jsonFieldName;
-    if (typeof logger === 'object' && logger.constructor === Logger) {
+
+    // using webpack, "logger.constructor === Logger" does not work
+    if (typeof logger === 'object' && typeof logger.level === 'object') {
       this.logger = logger;
     } else {
       this.logger = log4js.getLogger('stella');
