@@ -5,7 +5,7 @@ module.exports = {
   target: 'node',
   externals: [ nodeExternals() ],
   output: {
-    filename: 'stella.js',
+    filename: 'bundle.js',
     libraryTarget: 'commonjs2'
   }
 };

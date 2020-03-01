@@ -43,7 +43,7 @@
   },
   "scripts": {
     "test": "jest --watchAll",
-    "format": "prettier-eslint --write './src/**/*.js'",
+    "format": "prettier-eslint --write './src/**/*.js' './tests/**/*.js'",
     "build": "webpack"
   },
   "author": "tkmtdg <tkmtdg@gmail.com>",
