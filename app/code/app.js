@@ -51,6 +51,9 @@ exports.handler = async (event, context) => {
 
     return {
       'statusCode': 200,
+      'headers': {
+        'Content-Type': "application/json"
+      },
       'multiValueHeaders': {
         'Set-Cookie': setCookies
       },
@@ -59,6 +62,14 @@ exports.handler = async (event, context) => {
 
   } catch (error) {
     console.error(error.toString(), error);
-    throw error;
+    //throw error;
+
+    return {
+      'statusCode': 200,
+      'headers': {
+        'Content-Type': "application/json"
+      },
+      'body': error.message
+    }
   }
 };
