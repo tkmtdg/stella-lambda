@@ -29,9 +29,16 @@ exports.handler = async (event, context) => {
 
     const setCookies = [];
 
+    const crlf = /[¥r¥n]/;
+
     rawCookies.forEach((rawCookie) => {
       if (typeof (rawCookie) !== 'string') {
         console.warn('not a string', rawCookie);
+        return;
+      }
+
+      if (crlf.test(rawCookie)) {
+        console.warn('includes CR and/or LF', rawCookie);
         return;
       }
 
@@ -40,7 +47,13 @@ exports.handler = async (event, context) => {
         return;
       }
 
-      setCookies.push(rawCookie);
+      const trimmedCookie = rawCookie.trim();
+      if (trimmedCookie.length >= 4096) {
+        console.warn('cookie string is too long', trimmedCookie);
+        return;
+      }
+
+      setCookies.push(trimmedCookie);
     });
 
     if (setCookies.length === 0) {
@@ -52,7 +65,7 @@ exports.handler = async (event, context) => {
     return {
       'statusCode': 200,
       'headers': {
-        'Content-Type': "application/json"
+        'Content-Type': 'application/json'
       },
       'multiValueHeaders': {
         'Set-Cookie': setCookies
@@ -62,14 +75,13 @@ exports.handler = async (event, context) => {
 
   } catch (error) {
     console.error(error.toString(), error);
-    //throw error;
 
     return {
-      'statusCode': 200,
+      'statusCode': 400, // Bad Request
       'headers': {
-        'Content-Type': "application/json"
+        'Content-Type': 'application/json'
       },
-      'body': error.message
-    }
+      'body': error.message,
+    };
   }
 };
