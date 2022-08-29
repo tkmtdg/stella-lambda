@@ -29,7 +29,7 @@ exports.handler = async (event, context) => {
 
     const setCookies = [];
 
-    const crlf = /[¥r¥n]/;
+    const crlf = /[\r\n]/;
 
     rawCookies.forEach((rawCookie) => {
       if (typeof (rawCookie) !== 'string') {
